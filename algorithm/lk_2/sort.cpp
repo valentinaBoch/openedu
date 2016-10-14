@@ -1,9 +1,10 @@
 #include <fstream>
 #include <iostream>
-#include <algorithm>
 
 using namespace std;
+void Merge (int *a, int first, int last);
 void MergeSort (int *a, int first, int last);
+ofstream fout ("sort.out");
 
 int main () 
 {
@@ -11,86 +12,75 @@ int main ()
 	ifstream fin ("sort.in");
 	fin >> n;
 
-	int i = 0;
-	int array[n];
-	for (i; i < n; i++)
+	int i = 1;
+	int *array = new int[100];
+	for (i; i <= n; i++)
 		fin >> array[i];
 	fin.close();
 
-	int temp = 0;
-	for (i = 0; i < n-1; i++)
-	{
-		if (array[i] > array[i+1])
-		{
-			temp = array[i];
-			array[i] = array[i+1];
-			array[i+1] = temp;
-		}
-	}
-
-	for (i = 0; i < n; i++)
-        	cout << array [i];
-
+        MergeSort(array, 1, n); //вызов сортирующей процедуры
+//        cout<<"Result sort: "; //вывод упорядоченного массива
+        for (i=1; i<=n; i++) 
+		cout<<array[i]<<" ";
+        delete []array;
 	cout << endl;
 
-//	ofstream fout ("sor.out");
-//	fout << minNum + 1 << " " << avgNum +1 << " " << maxNum + 1;
-//	fout.close();
+//	ofstream fout ("sort.out");
+	for (i = 1; i <= n; i++)
+		fout << array[i] << " ";
+	fout.close();
 	return 0;
 }
 
-<<<<<<< HEAD
-void MergeSort (int *a, int first, int last)
+
+void Merge (int *a, int first, int last)
+{	
+//	ofstream fout("sort.out");
+	int middle, start, final, i;
+	int *mas = new int [1000000000];// [last];
+	middle = (first + last)/2;
+//	cout << middle << endl;
+	start = first; //начало левой части
+	final = middle+1; //начало правой части
+
+//cout << start << " " << final << " " << mas [start] << " " << a [middle] << endl;
+	for (i = first; i <= last; i++) //выполнять от начала до конца
+	{
+//		cout << start << " " << middle << " " << a [start] << " " << a [final] << endl;
+		if ((start <= middle) && ((final > last) || (a[start] < a[final])))
+		{
+			mas[i] = a[start];
+//			cout << start << " " << final << " " << mas [start] << " " << a [middle] << endl;
+			start++;	
+		}
+		else
+		{
+			mas[i]=a[final];
+//			cout << start << " " << final << " " << mas [start] << " " << a [middle] << endl;
+			final++;
+		}
+//		cout << start << " " << final << " " << mas [start] << " " << a [middle] << endl; 
+	}
+
+	//возвращение результата в список
+	for (i=first; i<=last; i++) 
+		a[i]=mas[i];
+
+//	fout.close();
+	cout << start << " " << final << " " << mas [start] << " " << a [middle] << endl;
+	delete[]mas;
+//      cout << start << " " << final << " " << mas [start] << " " << a [middle] << endl;
+
+};
+
+//рекурсивная процедура сортировки
+void MergeSort(int *a, int first, int last)
 {
-	int middle, last, first, i;
+        if (first<last)
+        {
+                MergeSort(a, first, (first+last)/2); //сортировка левой части
+                MergeSort(a, (first+last)/2+1, last); //сортировка правой части
+                Merge(a, first, last); //слияние двух частей
+        }
+};
 
-
-}
-=======
-void SortAlgo::mergeSort(int data[], int lenD)
-{
-  if(lenD>1){
-    int middle = lenD/2;
-    int rem = lenD-middle;
-    int* L = new int[middle];
-    int* R = new int[rem];
-    for(int i=0;i<lenD;i++){
-      if(i<middle){
-        L[i] = data[i];
-      }
-      else{
-        R[i-middle] = data[i];
-      }
-    }
-    mergeSort(L,middle);
-    mergeSort(R,rem);
-    merge(data, lenD, L, middle, R, rem);
-  }
-}
- 
-void SortAlgo::merge(int merged[], int lenD, int L[], int lenL, int R[], int lenR){
-  int i = 0;
-  int j = 0;
-  while(i<lenL||j<lenR){
-    if (i<lenL & j<lenR){
-      if(L[i]<=R[j]){
-        merged[i+j] = L[i];
-        i++;
-      }
-      else{
-        merged[i+j] = R[j];
-        j++;
-      }
-    }
-    else if(i<lenL){
-      merged[i+j] = L[i];
-      i++;
-    }
-    else if(j<lenR){
-      merged[i+j] = R[j];
-      j++;
-    }
-  }
-}
-
->>>>>>> 6b11b2100a8738b3e53a5d377119b3f5650cffff
