@@ -37,50 +37,56 @@ int main ()
 //	fout.close();
 	return 0;
 }
-
-void SortAlgo::mergeSort(int data[], int lenD)
+#include "stdafx.h"
+#include <iostream>
+using namespace std;
+//функция, сливающая массивы
+void Merge(int *A, int first, int last)
 {
-  if(lenD>1){
-    int middle = lenD/2;
-    int rem = lenD-middle;
-    int* L = new int[middle];
-    int* R = new int[rem];
-    for(int i=0;i<lenD;i++){
-      if(i<middle){
-        L[i] = data[i];
-      }
-      else{
-        R[i-middle] = data[i];
-      }
-    }
-    mergeSort(L,middle);
-    mergeSort(R,rem);
-    merge(data, lenD, L, middle, R, rem);
-  }
+int middle, start, final, j;
+int *mas=new int[100];
+middle=(first+last)/2; //вычисление среднего элемента
+start=first; //начало левой части
+final=middle+1; //начало правой части
+for(j=first; j<=last; j++) //выполнять от начала до конца
+if ((start<=middle) && ((final>last) || (A[start]<A[final])))
+{
+mas[j]=A[start];
+start++;
 }
- 
-void SortAlgo::merge(int merged[], int lenD, int L[], int lenL, int R[], int lenR){
-  int i = 0;
-  int j = 0;
-  while(i<lenL||j<lenR){
-    if (i<lenL & j<lenR){
-      if(L[i]<=R[j]){
-        merged[i+j] = L[i];
-        i++;
-      }
-      else{
-        merged[i+j] = R[j];
-        j++;
-      }
-    }
-    else if(i<lenL){
-      merged[i+j] = L[i];
-      i++;
-    }
-    else if(j<lenR){
-      merged[i+j] = R[j];
-      j++;
-    }
-  }
+else
+{
+mas[j]=A[final];
+final++;
 }
-
+//возвращение результата в список
+for (j=first; j<=last; j++) A[j]=mas[j];
+delete[]mas;
+};
+//рекурсивная процедура сортировки
+void MergeSort(int *A, int first, int last)
+{
+{
+if (first<last)
+{
+MergeSort(A, first, (first+last)/2); //сортировка левой части
+MergeSort(A, (first+last)/2+1, last); //сортировка правой части
+Merge(A, first, last); //слияние двух частей
+}
+}
+};
+//главная функция
+void main()
+{
+setlocale(LC_ALL, "Rus");
+int i, n;
+int *A=new int[100];
+cout<<"Размер массива > "; cin>>n;
+for (i=1; i<=n; i++)
+{ cout<<i<<" элемент > "; cin>>A[i];}
+MergeSort(A, 1, n); //вызов сортирующей процедуры
+cout<<"Упорядоченный массив: "; //вывод упорядоченного массива
+for (i=1; i<=n; i++) cout<<A[i]<<" ";
+delete []A;
+system("pause>>void");
+}
