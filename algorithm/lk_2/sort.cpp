@@ -3,6 +3,7 @@
 #include <algorithm>
 
 using namespace std;
+void MergeSort (int *a, int first, int last);
 
 int main () 
 {
@@ -38,3 +39,9 @@ int main ()
 	return 0;
 }
 
+void MergeSort (int *a, int first, int last)
+{
+	int middle, last, first, i;
+
+
+}
